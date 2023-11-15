@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import axios from 'axios';
 import fs from 'fs-extra-promise';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
@@ -92,7 +93,7 @@ async function uploadFolder(localFolder, url) {
   }
 }
 
-const TEMP_ROOT = './output';
+const TEMP_ROOT = process.env.AWS_LAMBDA_FUNCTION_NAME ? '/tmp' : './output';
 
 async function getTempFolder() {
   return TEMP_ROOT;
