@@ -94,6 +94,7 @@ async function uploadFolder(localFolder, url) {
 }
 
 const TEMP_ROOT = process.env.AWS_LAMBDA_FUNCTION_NAME ? '/tmp' : './output';
+console.log('USE TEMP ROOT', TEMP_ROOT);
 
 async function getTempFolder() {
   return TEMP_ROOT;
@@ -112,4 +113,8 @@ export {
   getTempPath,
 };
 
-fs.emptydirSync(TEMP_ROOT);
+try {
+  fs.emptydirSync(TEMP_ROOT);
+} catch (err) {
+  console.log('Unable to empty', TEMP_ROOT);
+}
