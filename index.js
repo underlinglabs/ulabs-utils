@@ -65,6 +65,7 @@ function getBucketParams(url) {
 
 async function uploadFile(localPath, url, contentType) {
   const md5 = await md5File(localPath);
+  const md5Base64 = Buffer.from(md5, 'hex').toString('base64');
   const bp = getBucketParams(url);
   const data = await fs.readFileAsync(localPath);
   if (!contentType) {
@@ -84,7 +85,7 @@ async function uploadFile(localPath, url, contentType) {
     Key: bp.key,
     Body: data,
     ContentType: contentType,
-    ContentMD5: md5,
+    ContentMD5: md5Base64,
   });
   const resp = await client.send(command);
 }
