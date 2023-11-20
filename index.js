@@ -5,6 +5,7 @@ import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3
 import { URL } from 'node:url';
 import { Readable } from 'stream';
 import mime from 'mime-types';
+import md5File from 'md5-file';
 
 // Download Files
 
@@ -63,6 +64,7 @@ function getBucketParams(url) {
 }
 
 async function uploadFile(localPath, url, contentType) {
+  const md5 = await md5File(localPath);
   const bp = getBucketParams(url);
   const data = await fs.readFileAsync(localPath);
   if (!contentType) {
@@ -82,6 +84,7 @@ async function uploadFile(localPath, url, contentType) {
     Key: bp.key,
     Body: data,
     ContentType: contentType,
+    ContentMD5: md5,
   });
   const resp = await client.send(command);
 }
