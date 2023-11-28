@@ -57,9 +57,9 @@ function getBucketParams(url) {
     accessKeyId: u.username,
     secretAccessKey: u.password,
     endpoint: u.hostname,
-    bucket: u.hostname.split('.')[0],
+    bucket: u.pathname.split('/')[1],
     region: u.hostname.split('.')[2],
-    key: u.pathname.replace('/', ''),
+    key: u.pathname.split('/').slice(2).join('/'),
   };
 }
 
